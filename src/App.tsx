@@ -229,7 +229,7 @@ function App() {
       <div></div>
       <button onClick={handleSubmit}>Check balance</button>
         { BNBTokens !== null ? <p> BNB: {web3.utils.fromWei(BNBTokens,"ether")}</p> : <p>Loading BNB tokens....</p>}
-        <h4>Last transactions:</h4>
+        <h4>Last 5 transactions:</h4>
         { transactions?.data.result.map(result => (
           <p>From: <div>{result.from}</div> To: <div>{result.to}</div> Value: {web3.utils.fromWei(result.value,"ether")} BNB</p>
         ))}
