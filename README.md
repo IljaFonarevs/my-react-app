@@ -27,7 +27,7 @@ Vite requires Node.js to run. Follow these steps to install Node.js (which inclu
 Use Git to clone the project repository (if Git is not installed, refer to Step 3 below):
 
 ```sh
-git clone <repository-url>
+git clone https://github.com/IljaFonarevs/my-react-app.git
 cd <project-folder>
 ```
 
