@@ -128,13 +128,13 @@ function App() {
           }
         });
         if(response.data.status !== "1"){
-          console.log("Error fetching token list");
+          console.log("Error fetching balance");
           return;
         }
         
         setBNBTokens(response.data.result);
     } catch (error) {
-        console.error("Error fetching token list:", error);
+        console.error("Error fetching balance:", error);
     }
   };
 
