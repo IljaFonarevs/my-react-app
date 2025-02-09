@@ -25,6 +25,12 @@ const routerABI = [
     type: "function",
   },
 ];
+const tokenABI = [
+  { "constant": true, "inputs": [], "name": "name", "outputs": [{ "name": "", "type": "string" }], "type": "function" },
+  { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "name": "", "type": "string" }], "type": "function" },
+  { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint8" }], "type": "function" },
+  { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "name": "", "type": "uint256" }], "type": "function" }
+];
 
 const router = new web3.eth.Contract(routerABI, PANCAKE_ROUTER);
 
@@ -32,11 +38,14 @@ function App() {
   const [tokenToAddress, setTokenToAddress] = useState(new Map());
   const [options, setOptions] = useState<string[]>([]);
   const [convertFrom, setConvertFrom] = useState<string | null>(null);
-  const [convertTo, setConvertTo] = useState<string | null>(null);
+  const [convertTo, setConvertTo] = useState<string | null>("WBNB");
   const [price, setPrice] = useState<number | null>(null);
   const [amount, setAmount] = useState<number>(1);
-  const [address, setAddress] = useState<string | null>(null);
-  const [BNBTokens, setBNBTokens] = useState<number | null>(null);
+  const [address, setAddress] = useState<string | null>("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c");
+  const [BNBTokens, setBNBTokens] = useState<string | null>(null);
+  const [transactions, setTransactions] = useState<AxiosResponse | null>(null);
+  const [tokenInfoFrom, setTokenInfoFrom] = useState();
+  const [tokenInfoTo, setTokenInfoTo] = useState();
   
   useEffect(() => {
     const getTokenList = async () => {
@@ -72,39 +81,22 @@ function App() {
         const fromAddress = tokenToAddress.get(convertFrom);
         const toAddress = tokenToAddress.get(convertTo);
 
-        console.log(` Fetching price for ${convertFrom} (${fromAddress}) -> ${convertTo} (${toAddress})`);
-
         const amounts = await router.methods.getAmountsOut(amountInWei, [fromAddress, toAddress]).call();
         const amountOut = web3.utils.fromWei(amounts[1].toString(), "ether");
 
         setPrice(Number(amountOut));
+
+        getTokenInfo(convertFrom).then(data => {
+          setTokenInfoFrom({ name: data?.name, decimals: data?.decimals, totalSupply: data?.totalSupply});
+        });
+        getTokenInfo(convertTo).then(data => {
+          setTokenInfoTo({ name: data?.name, decimals: data?.decimals, totalSupply: data?.totalSupply});
+        });
       } catch (error) {
         console.error("Error fetching price:", error);
       }
     };
-    const getBalance = async () => {
-      try {
-          const response = await axios.get(BSC_SCAN_API, {
-            params: {
-              module: "account",
-              action: "balance",
-              address: address,
-              apikey: BSC_API_KEY
-            }
-          });
-          console.log(response);
-          if(response.data.status !== "1"){
-            console.log("Error fetching token list");
-            return;
-          }
-          
-          setBNBTokens(Number(response.data.result));
-
-      } catch (error) {
-          console.error("Error fetching token list:", error);
-      }
-    };
-    const intervalPrice = setInterval(getTokenPrice, 1000);
+    const intervalPrice = setInterval(getTokenPrice, 2000);
     
     return () => {
       clearInterval(intervalPrice);
@@ -121,10 +113,11 @@ function App() {
 
   const handleSubmit = () => {
     if(!address)return;
-    getBalance(address);
+    getBalance();
+    getTransactions();
   };
 
-  let getBalance = async (address: string) => {
+  const getBalance = async () => {
     try {
         const response = await axios.get(BSC_SCAN_API, {
           params: {
@@ -134,17 +127,59 @@ function App() {
             apikey: BSC_API_KEY
           }
         });
-        console.log(response);
         if(response.data.status !== "1"){
           console.log("Error fetching token list");
           return;
         }
         
-        setBNBTokens(Number(response.data.result));
+        setBNBTokens(response.data.result);
     } catch (error) {
         console.error("Error fetching token list:", error);
     }
   };
+
+  const getTransactions = async () => {
+    try {
+        const response = await axios.get(BSC_SCAN_API, {
+          params: {
+            module: "account",
+            action: "txlist",
+            address: address,
+            startblock: 0,
+            endblock: 99999999,
+            page: 1,
+            offset: 5,
+            sort: "desc",
+            apikey: BSC_API_KEY
+          }
+        });
+        console.log(response);
+        if(response.data.status !== "1"){
+          console.log("Error fetching transcation list");
+          return;
+        }
+        
+        setTransactions(response);
+
+    } catch (error) {
+        console.error("Error fetching transaction list:", error);
+    }
+  };
+
+  const getTokenInfo = async (tokenSymbol: string) => {
+    try {
+      const tokenContract = new web3.eth.Contract(tokenABI, tokenToAddress.get(tokenSymbol));
+
+      const name = await tokenContract.methods.name().call();
+      const symbol = await tokenContract.methods.symbol().call();
+      const decimals = await tokenContract.methods.decimals().call();
+      const totalSupply = await tokenContract.methods.totalSupply().call();
+      return {name: name, symbol: symbol, decimals: decimals, totalSupply: totalSupply}
+    }
+    catch(error){
+
+    }
+  }
 
   return (
     <div className="flex flex-col items-center space-y-6 p-10">
@@ -166,7 +201,16 @@ function App() {
       />
       <DropdownCrypto options={options} onOptionSelect={setConvertFrom} /> to
       <DropdownCrypto options={options} onOptionSelect={setConvertTo} />
-      {price ? <p>💰 {amount} {convertFrom} = {price*amount} {convertTo}</p> : <p>Loading price...</p>}
+      {price ? <p>{amount} {convertFrom} = {price*amount} {convertTo}</p> : <h4>Loading price...</h4>}
+      {tokenInfoFrom && tokenInfoTo ? <><h4>Info about tokens:</h4> 
+      <p>{tokenInfoFrom.name}</p>
+      <p>Decimals: {tokenInfoFrom.decimals}</p>
+      <p>Total Amount: {tokenInfoFrom.totalSupply}</p>
+      
+      <p>{tokenInfoTo.name}</p>
+      <p>Decimals: {tokenInfoTo.decimals}</p>
+      <p>Total Amount: {tokenInfoTo.totalSupply}</p>
+      </> : <h4>Loading info about tokens...</h4>}
       <h1>BSC Wallet Balance</h1>
       <input
         type="text"
@@ -184,7 +228,11 @@ function App() {
       />
       <div></div>
       <button onClick={handleSubmit}>Check balance</button>
-        { BNBTokens !== null ? <p> BNB: {BNBTokens/1000000000000000000}</p> : <p>Loading BNB tokens....</p>}
+        { BNBTokens !== null ? <p> BNB: {web3.utils.fromWei(BNBTokens,"ether")}</p> : <p>Loading BNB tokens....</p>}
+        <h4>Last transactions:</h4>
+        { transactions?.data.result.map(result => (
+          <p>From: <div>{result.from}</div> To: <div>{result.to}</div> Value: {web3.utils.fromWei(result.value,"ether")} BNB</p>
+        ))}
     </div>
   );
 }

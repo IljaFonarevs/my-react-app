@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const DropdownCrypto = ({ options, onOptionSelect }) => {
   // State to store the current text input
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState('WBNB');
   // State to control the dropdown visibility
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
