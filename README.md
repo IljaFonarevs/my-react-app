@@ -1,50 +1,82 @@
-# React + TypeScript + Vite
+Step 1: Install Node.js and npm
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Vite requires Node.js to run. Follow these steps to install Node.js (which includes npm, the Node package manager):
 
-Currently, two official plugins are available:
+Windows:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Download and install Node.js from Node.js official website.
 
-## Expanding the ESLint configuration
+During installation, ensure you select the option to install npm.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Verify installation by running the following command in Command Prompt (cmd) or PowerShell:
 
-- Configure the top-level `parserOptions` property like this:
+node -v
+npm -v
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+macOS:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Open Terminal and install Homebrew if not already installed:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Install Node.js using Homebrew:
+
+brew install node
+
+Verify installation:
+
+node -v
+npm -v
+
+Linux:
+
+Open Terminal and install Node.js via package manager:
+
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+
+Verify installation:
+
+node -v
+npm -v
+
+Step 2: Clone the Project Repository
+
+Use Git to clone the project repository (if Git is not installed, refer to Step 3 below):
+
+ git clone <repository-url>
+ cd <project-folder>
+
+Step 3: Install Git (If Not Installed)
+
+If Git is not installed, install it using the following steps:
+
+Windows:
+
+Download and install Git from Git official website.
+
+Verify installation:
+
+git --version
+
+macOS:
+
+brew install git
+
+Linux:
+
+sudo apt install git
+
+Step 4: Install Project Dependencies
+
+Once inside the project folder, install dependencies using npm:
+
+npm install
+
+Step 5: Start the Development Server
+
+To run the Vite development server, execute:
+
+npm run dev
+
+This will start the project and provide a local URL (e.g., http://localhost:5173/).
