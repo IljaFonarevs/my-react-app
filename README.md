@@ -1,82 +1,67 @@
-Step 1: Install Node.js and npm
+# React + TypeScript + Vite Project Setup Guide
+
+This guide provides step-by-step instructions to set up and run this React + TypeScript + Vite project from scratch on a system with no pre-installed dependencies.
+
+## Prerequisites
+
+Before starting, ensure your system meets the following requirements:
+
+- **Operating System**: Windows, macOS, or Linux
+- **Internet Connection**: Required to download dependencies
+
+## Step 1: Install Node.js and npm
 
 Vite requires Node.js to run. Follow these steps to install Node.js (which includes npm, the Node package manager):
 
-Windows:
+### Download:
 
-Download and install Node.js from Node.js official website.
+1. Download and install Node.js from [Node.js official website](https://nodejs.org/).
+2. During installation, ensure you select the option to install `npm`.
+3. Verify installation by running the following command in Command Prompt (cmd) or PowerShell:
+   ```sh
+   node -v
+   npm -v
 
-During installation, ensure you select the option to install npm.
-
-Verify installation by running the following command in Command Prompt (cmd) or PowerShell:
-
-node -v
-npm -v
-
-macOS:
-
-Open Terminal and install Homebrew if not already installed:
-
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-Install Node.js using Homebrew:
-
-brew install node
-
-Verify installation:
-
-node -v
-npm -v
-
-Linux:
-
-Open Terminal and install Node.js via package manager:
-
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt install -y nodejs
-
-Verify installation:
-
-node -v
-npm -v
-
-Step 2: Clone the Project Repository
+## Step 2: Clone the Project Repository
 
 Use Git to clone the project repository (if Git is not installed, refer to Step 3 below):
 
- git clone <repository-url>
- cd <project-folder>
+```sh
+git clone <repository-url>
+cd <project-folder>
+```
 
-Step 3: Install Git (If Not Installed)
+## Step 3: Install Git (If Not Installed)
 
-If Git is not installed, install it using the following steps:
+If Git is not installed on your system, follow the steps below to install it.
 
-Windows:
+### Download:
 
-Download and install Git from Git official website.
+1. Download Git from the [official Git website](https://git-scm.com/).
+2. Run the installer and follow the setup instructions. Ensure you select the option to add Git to your system's PATH.
+3. After installation, verify Git is installed by running the following command in Command Prompt (cmd) or PowerShell:
+   ```sh
+   git --version
+   ```
+## Step 4: Install Project Dependencies
 
-Verify installation:
+Once you have cloned the repository and navigated into the project folder, you need to install the required dependencies.
 
-git --version
+Run the following command inside the project directory:
 
-macOS:
-
-brew install git
-
-Linux:
-
-sudo apt install git
-
-Step 4: Install Project Dependencies
-
-Once inside the project folder, install dependencies using npm:
-
+```sh
 npm install
+```
 
-Step 5: Start the Development Server
+## Step 5: Start the Development Server
 
-To run the Vite development server, execute:
+After installing the dependencies, you can start the Vite development server to run the project locally.
 
+Run the following command:
+
+```sh
 npm run dev
+```
 
-This will start the project and provide a local URL (e.g., http://localhost:5173/).
+## You're done!
+
