@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite Project Setup Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This guide provides step-by-step instructions to set up and run this React + TypeScript + Vite project from scratch on a system with no pre-installed dependencies.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Before starting, ensure your system meets the following requirements:
 
-## Expanding the ESLint configuration
+- **Operating System**: Windows, macOS, or Linux
+- **Internet Connection**: Required to download dependencies
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Step 1: Install Node.js and npm
 
-- Configure the top-level `parserOptions` property like this:
+Vite requires Node.js to run. Follow these steps to install Node.js (which includes npm, the Node package manager):
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Download:
+
+1. Download and install Node.js from [Node.js official website](https://nodejs.org/).
+2. During installation, ensure you select the option to install `npm`.
+3. Verify installation by running the following command in Command Prompt (cmd) or PowerShell:
+   ```sh
+   node -v
+   npm -v
+
+## Step 2: Clone the Project Repository
+
+Use Git to clone the project repository (if Git is not installed, refer to Step 3 below):
+
+```sh
+git clone https://github.com/IljaFonarevs/my-react-app.git
+cd <project-folder>
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Step 3: Install Git (If Not Installed)
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+If Git is not installed on your system, follow the steps below to install it.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### Download:
+
+1. Download Git from the [official Git website](https://git-scm.com/).
+2. Run the installer and follow the setup instructions. Ensure you select the option to add Git to your system's PATH.
+3. After installation, verify Git is installed by running the following command in Command Prompt (cmd) or PowerShell:
+   ```sh
+   git --version
+   ```
+## Step 4: Install Project Dependencies
+
+Once you have cloned the repository and navigated into the project folder, you need to install the required dependencies.
+
+Run the following command inside the project directory:
+
+```sh
+npm install
 ```
+
+## Step 5: Start the Development Server
+
+After installing the dependencies, you can start the Vite development server to run the project locally.
+
+Run the following command:
+
+```sh
+npm run dev
+```
+
+## You're done!
+
