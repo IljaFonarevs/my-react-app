@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import Web3 from "web3";
 import DropdownCrypto from "./DropdownCrypto";
 import "./App.css";
+import WalletConnector from "./components/WalletConnector";
 
 const web3 = new Web3("https://bsc-dataseed.binance.org/");
 const PANCAKE_ROUTER = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
@@ -183,6 +184,10 @@ function App() {
 
   return (
     <div className="flex flex-col items-center space-y-6 p-10">
+      <div style={{ padding: "2rem" }}>
+      <h1>Login with MetaMask</h1>
+      <WalletConnector />
+    </div>
       <h1>Convert</h1>
       <p>Enter desired amount:</p>
       <input
@@ -233,7 +238,9 @@ function App() {
         { transactions?.data.result.map(result => (
           <p>From: <div>{result.from}</div> To: <div>{result.to}</div> Value: {web3.utils.fromWei(result.value,"ether")} BNB</p>
         ))}
+        
     </div>
+    
   );
 }
 
